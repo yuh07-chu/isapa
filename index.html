@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Assignment 3</title>
+    <style>
+        /* Global Reset */
+        * {
+            box-shadow: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* -------------------------------------- */
+        /* STYLES FOR THE FAKE / BORING SCREENS  */
+        /* -------------------------------------- */
+        .fake-body {
+            background-color: #f4f6f9;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .fake-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 500px;
+            width: 100%;
+            border-top: 5px solid #4a90e2;
+        }
+
+        .fake-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .fake-card p {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .fake-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .fake-btn:hover {
+            background-color: #357abd;
+        }
+
+        .error-text {
+            color: #e74c3c !important;
+            font-weight: bold;
+        }
+
+        /* -------------------------------------- */
+        /* STYLES FOR THE REAL ANNIVERSARY SITE   */
+        /* -------------------------------------- */
+        #real-page {
+            /* Change 'collage.jpg' to whatever your Canva file name is */
+            background-image: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('collage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .anniversary-title {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin-bottom: 40px;
+            color: #ff758f;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Polaroid Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 950px;
+            width: 100%;
+        }
+
+        /* Polaroid Design */
+        .card {
+            background: white;
+            padding: 18px;
+            padding-bottom: 30px;
+            border-radius: 2px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotate(3deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.25);
+        }
+
+        /* Polaroid Photo Space */
+        .card-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover; /* Keeps your photos perfectly proportioned */
+            border-radius: 2px;
+        }
+
+        .card-title {
+            margin-top: 18px;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-weight: bold;
+            color: #c9184a;
+            font-size: 1.1rem;
+        }
+
+        /* Pop-up (Modal) Box for Paragraphs */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: popUpEffect 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUpEffect {
+            from { transform: scale(0.6); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            font-family: 'Georgia', serif;
+            color: #ff4d6d;
+            margin-bottom: 15px;
+        }
+
+        /* Paragraph adjustments inside pop-up */
+        .modal-content p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #4a4a4a;
+            text-align: justify; /* Makes full paragraphs look neat and tidy */
+        }
+
+        .close-btn {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            margin-top: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .close-btn:hover {
+            background-color: #c9184a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- PRANK SCREEN 1: THE ACCIDENTAL HOMEWORK     -->
+    <!-- ========================================== -->
+    <div id="fake-screen-1" class="fake-body">
+        <div class="fake-card">
+            <h2>IT-302: Database Management Systems</h2>
+            <p>Welcome to the sandbox submission portal. This repository contains the framework configuration files for data sequence manipulation. Click below to initialize the repository verification process.</p>
+            <button class="fake-btn" onclick="nextFakeScreen()">Initialize Verification</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PRANK SCREEN 2: THE SCARY ERROR MESSAGES    -->
+    <!-- ========================================== -->
+    <div id="fake-screen-2" class="fake-body" style="display: none;">
+        <div class="fake-card" style="border-top: 5px solid #e74c3c;">
+            <h2 class="error-text">System Warning: Protocol Overlap</h2>
+            <p>An unexpected file exception error has occurred. Corruption detected in line 404. Foreign encryption detected. To bypass security logs and force execute the visual compiler, click below.</p>
+            <button class="fake-btn" style="background-color: #e74c3c;" onclick="revealRealSite()">Force Execute Code</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- THE REAL SITE (Transports into view)       -->
+    <!-- ========================================== -->
+    <div id="real-page" style="display: none;">
+        
+        <h1 class="anniversary-title">Happy 6 Months, Love! ❤️</h1>
+        <p class="subtitle">6 things I've learned to love about you...</p>
+
+        <div class="grid-container">
+            <!-- Polaroid 1 -->
+            <div class="card" onclick="openModal('Your Resilience', 'This is where you write your first full paragraph. It can be as long as you want because the box is set up to automatically expand downward. Talk about how much you admire his strength or how he handles things here!')">
+                <img src="pic1.jpg" class="card-photo" alt="Photo 1">
+                <div class="card-title">Thing #1</div>
+            </div>
+
+            <!-- Polaroid 2 -->
+            <div class="card" onclick="openModal('The Tiny Details', 'Write your second paragraph here. Maybe talk about a specific memory or something super small that he does that always catches your attention. The paragraph layout is set to look like a book page.')">
+                <img src="pic2.jpg" class="card-photo" alt="Photo 2">
+                <div class="card-title">Thing #2</div>
+            </div>
+
+            <!-- Polaroid 3 -->
+            <div class="card" onclick="openModal('Your Safe Space', 'Write your third paragraph right here. Remind him of a time he completely cheered you up or how much better life feels when you guys are just hanging out completely stress-free.')">
+                <img src="pic3.jpg" class="card-photo" alt="Photo 3">
+                <div class="card-title">Thing #3</div>
+            </div>
+
+            <!-- Polaroid 4 -->
+            <div class="card" onclick="openModal('The Loud Laughs', 'Paragraph four goes inside these single quotes. Make sure if you write a contraction like don\'t or you\'re, you add a backslash before the apostrophe so the code doesn\'t break!')">
+                <img src="pic4.jpg" class="card-photo" alt="Photo 4">
+                <div class="card-title">Thing #4</div>
+            </div>
+
+            <!-- Polaroid 5 -->
+            <div class="card" onclick="openModal('Our Shared Habits', 'Paragraph five goes right here. You can fill this up with 4 to 6 lines of sweet text effortlessly. It will adjust beautifully whether he opens it up on his phone or a laptop screen.')">
+                <img src="pic5.jpg" class="card-photo" alt="Photo 5">
+                <div class="card-title">Thing #5</div>
+            </div>
+
+            <!-- Polaroid 6 -->
+            <div class="card" onclick="openModal('Every Single Day', 'Your final big romantic paragraph wraps up right here. End it with a sweet half-year wrap-up sentence or an inside joke before he hits the return button to look at the grid again.')">
+                <img src="pic6.jpg" class="card-photo" alt="Photo 6">
+                <div class="card-title">Thing #6</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- The Pop-Up Box Element -->
+    <div id="secretModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+            <button class="close-btn" onclick="closeModal()">Go Back ←</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC                           -->
+    <!-- ========================================== -->
+    <script>
+        /* Prank System Switching */
+        function nextFakeScreen() {
+            document.getElementById('fake-screen-1').style.display = 'none';
+            document.getElementById('fake-screen-2').style.display = 'flex';
+        }
+
+        function revealRealSite() {
+            document.getElementById('fake-screen-2').style.display = 'none';
+            document.getElementById('real-page').style.display = 'flex';
+        }
+
+        /* Polaroid Modal Pop-up Control */
+        function openModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+            document.getElementById('secretModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('secretModal').style.display = 'none';
+        }
+
+        /* Safety: click outside the modal white-box to exit */
+        window.onclick = function(event) {
+            let modal = document.getElementById('secretModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
